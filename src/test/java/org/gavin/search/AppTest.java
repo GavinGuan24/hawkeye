@@ -1,4 +1,4 @@
-package org.gavin.search;
+package org.gavin.search.hawkeye;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

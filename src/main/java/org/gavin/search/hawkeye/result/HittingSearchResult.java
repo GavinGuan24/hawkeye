@@ -1,4 +1,4 @@
-package org.gavin.search.result;
+package org.gavin.search.hawkeye.result;
 
 import org.apache.lucene.search.ScoreDoc;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * ---------------------------------------------------
  * File:    HittingSearchResult
- * Package: org.gavin.search.result
+ * Package: org.gavin.search.hawkeye.result
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/22 16:25.

@@ -1,11 +1,11 @@
-package org.gavin.search.result;
+package org.gavin.search.hawkeye.result;
 
 import java.util.List;
 
 /**
  * ---------------------------------------------------
  * File:    PagingQueryResult
- * Package: org.gavin.search.result
+ * Package: org.gavin.search.hawkeye.result
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/23 13:04.

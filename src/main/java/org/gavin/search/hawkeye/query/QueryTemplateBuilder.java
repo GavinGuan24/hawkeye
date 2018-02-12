@@ -1,4 +1,4 @@
-package org.gavin.search.query;
+package org.gavin.search.hawkeye.query;
 
 import com.hankcs.hanlp.HanLP;
 import org.apache.lucene.index.Term;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * ---------------------------------------------------
  * File:    QueryTemplateBuilder
- * Package: org.gavin.search.query
+ * Package: org.gavin.search.hawkeye.query
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/25 14:45.

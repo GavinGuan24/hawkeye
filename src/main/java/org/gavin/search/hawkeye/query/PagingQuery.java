@@ -1,4 +1,4 @@
-package org.gavin.search.query;
+package org.gavin.search.hawkeye.query;
 
 import org.apache.lucene.search.Query;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * ---------------------------------------------------
  * File:    PagingQuery
- * Package: org.gavin.search.query
+ * Package: org.gavin.search.hawkeye.query
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/23 13:45.

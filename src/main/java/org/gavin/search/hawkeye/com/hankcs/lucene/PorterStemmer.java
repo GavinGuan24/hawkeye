@@ -1,4 +1,4 @@
-package org.gavin.search.com.hankcs.lucene;
+package org.gavin.search.hawkeye.com.hankcs.lucene;
 
 import org.apache.lucene.util.ArrayUtil;
 

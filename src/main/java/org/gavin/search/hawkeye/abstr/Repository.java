@@ -1,9 +1,9 @@
-package org.gavin.search.abstr;
+package org.gavin.search.hawkeye.abstr;
 
-import org.gavin.search.com.hankcs.lucene.HanLPIndexAnalyzer;
-import org.gavin.search.query.PagingQuery;
-import org.gavin.search.result.HittingSearchResult;
-import org.gavin.search.result.PagingQueryResult;
+import org.gavin.search.hawkeye.com.hankcs.lucene.HanLPIndexAnalyzer;
+import org.gavin.search.hawkeye.query.PagingQuery;
+import org.gavin.search.hawkeye.result.HittingSearchResult;
+import org.gavin.search.hawkeye.result.PagingQueryResult;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.*;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * ---------------------------------------------------
  * File:    Repository
- * Package: org.gavin.search
+ * Package: org.gavin.search.hawkeye
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/19 09:52.

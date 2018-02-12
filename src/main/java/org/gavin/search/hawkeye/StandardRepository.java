@@ -1,6 +1,6 @@
-package org.gavin.search;
+package org.gavin.search.hawkeye;
 
-import org.gavin.search.abstr.Repository;
+import org.gavin.search.hawkeye.abstr.Repository;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * ---------------------------------------------------
  * File:    StandardRepository
- * Package: org.gavin.search
+ * Package: org.gavin.search.hawkeye
  * Project: hawkeye
  * ---------------------------------------------------
  * Created by gavinguan on 2018/1/19 09:56.
