@@ -249,7 +249,7 @@ public abstract class Repository<T> {
      */
     public final void close() throws IOException {
         checkClosed();
-        this.indexReader.close();
+        if (this.indexReader != null) this.indexReader.close();
         this.directory.close();
         this.closed = true;
     }
