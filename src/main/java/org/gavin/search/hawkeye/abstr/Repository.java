@@ -397,7 +397,16 @@ public abstract class Repository<T> {
     public final HittingSearchResult<T> hittingSearch(Query query, int n, ScoreDoc after, boolean highlight)
             throws IOException {
 
-        SearchResponse searchResponse = search(query, n, after);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = search(query, n, after);
+        } catch (IndexNotFoundException e) {
+            e.printStackTrace();
+            //从未建立过索引, 直接返回 0 命中
+            return new HittingSearchResult<>(0, new ArrayList<>(), null);
+        }
+
+
         TopDocs topDocs = searchResponse.getTopDocs();
         IndexSearcher indexSearcher = searchResponse.getIndexSearcher();
 
@@ -422,7 +431,6 @@ public abstract class Repository<T> {
 
             return new HittingSearchResult<>(topDocs.totalHits, hitsList, newAfter);
         } else {
-
             return new HittingSearchResult<>(topDocs.totalHits, new ArrayList<>(), null);
         }
     }
@@ -436,7 +444,15 @@ public abstract class Repository<T> {
      * @throws IOException
      */
     public final PagingQueryResult<T> pagingSearch(PagingQuery pagingQuery) throws IOException {
-        SearchResponse searchResponse = search(pagingQuery.getCoreQuery(), pagingQuery.getHittingMax(), null);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = search(pagingQuery.getCoreQuery(), pagingQuery.getHittingMax(), null);
+        } catch (IndexNotFoundException e) {
+            e.printStackTrace();
+            //从未建立过索引, 直接返回 0 命中
+            return new PagingQueryResult<>(0, new ArrayList<>(), pagingQuery.getPageIndex(), pagingQuery.getPageSize());
+        }
+
         IndexSearcher indexSearcher = searchResponse.getIndexSearcher();
         TopDocs topDocs = searchResponse.getTopDocs();
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
