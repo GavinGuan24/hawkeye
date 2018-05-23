@@ -1,6 +1,6 @@
 package org.gavin.search.hawkeye.abstr;
 
-import org.gavin.search.hawkeye.com.hankcs.lucene.HanLPIndexAnalyzer;
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.gavin.search.hawkeye.query.PagingQuery;
 import org.gavin.search.hawkeye.result.HittingSearchResult;
 import org.gavin.search.hawkeye.result.PagingQueryResult;
