@@ -1,6 +1,5 @@
 package org.gavin.search.hawkeye.abstr;
 
-import org.apache.lucene.store.LockObtainFailedException;
 import org.gavin.search.hawkeye.com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.gavin.search.hawkeye.query.PagingQuery;
 import org.gavin.search.hawkeye.result.HittingSearchResult;
@@ -48,8 +47,9 @@ public abstract class Repository<T> {
 
     private boolean closed;
 
-    // TODO: 私有方法
+    // TODO: 私有方法 private methods
 
+    //调用该方法的方法需要 synchronized (this = Repository)
     private IndexWriter getIndexWriter() throws IOException {
         checkClosed();
         IndexWriter indexWriter = customMakeIndexWriter(this.analyzer);
@@ -57,16 +57,8 @@ public abstract class Repository<T> {
             //writer: 默认 标准语法解析器, 写模式 -> 新建与追加
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(this.analyzer);
             indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-
-            //feature: 这里的 IndexWriter 在多线程时会异常
-            while (indexWriter == null) {
-                try {
-                    indexWriter = new IndexWriter(this.directory, indexWriterConfig);
-                } catch (LockObtainFailedException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            //这里只要保证同一时刻只有一个 IndexWriter 就不会 throw LockObtainFailedException
+            indexWriter = new IndexWriter(this.directory, indexWriterConfig);
         } else if (!indexWriter.isOpen()) {
             throw new IOException("This Custom-Make IndexWriter Has Been Closed");
         }
@@ -85,7 +77,7 @@ public abstract class Repository<T> {
         return directoryReader;
     }
 
-    private Highlighter getHighlighter(Query query) throws IOException {
+    private Highlighter getHighlighter(Query query) {
         Highlighter highlighter = customMakeHighlighter(query);
         if (highlighter == null) {
             highlighter = new Highlighter(new SimpleHTMLFormatter(HighLightLabS, HighLightLabE), new QueryScorer(query));
@@ -121,9 +113,7 @@ public abstract class Repository<T> {
             }
         }
 
-        IndexReader indexReader = this.indexReader;
-        IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-
+        IndexSearcher indexSearcher = new IndexSearcher(this.indexReader);
         TopDocs topDocs = null;
         if (after == null) {
             topDocs = indexSearcher.search(query,n);
@@ -203,7 +193,7 @@ public abstract class Repository<T> {
     /**
      * 构建一个仓库 Repository
      * @param directoryPath @nullable: When directoryPath is null, directory will be created as RAMRepository.
-     * @param analyzer @nullable: Default is StandardAnalyzer.
+     * @param analyzer @nullable: Default is HanLPIndexAnalyzer.
      * @throws IOException
      */
     protected Repository(String directoryPath, Analyzer analyzer) throws IOException {
