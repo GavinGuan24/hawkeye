@@ -1,5 +1,6 @@
 package org.gavin.search.hawkeye.abstr;
 
+import org.apache.lucene.store.LockObtainFailedException;
 import org.gavin.search.hawkeye.com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.gavin.search.hawkeye.query.PagingQuery;
 import org.gavin.search.hawkeye.result.HittingSearchResult;
@@ -56,7 +57,16 @@ public abstract class Repository<T> {
             //writer: 默认 标准语法解析器, 写模式 -> 新建与追加
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(this.analyzer);
             indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-            indexWriter = new IndexWriter(this.directory, indexWriterConfig);
+
+            //feature: 这里的 IndexWriter 在多线程时会异常
+            while (indexWriter == null) {
+                try {
+                    indexWriter = new IndexWriter(this.directory, indexWriterConfig);
+                } catch (LockObtainFailedException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else if (!indexWriter.isOpen()) {
             throw new IOException("This Custom-Make IndexWriter Has Been Closed");
         }
@@ -270,7 +280,7 @@ public abstract class Repository<T> {
      * @param document
      * @throws IOException
      */
-    public final void addDocument(T document) throws IOException {
+    public synchronized final void addDocument(T document) throws IOException {
         checkClosed();
         if (document != null) {
             Document target = new Document();
@@ -289,7 +299,7 @@ public abstract class Repository<T> {
      * @param documents
      * @throws IOException
      */
-    public final void addDocuments(List<T> documents) throws IOException {
+    public synchronized final void addDocuments(List<T> documents) throws IOException {
         checkClosed();
         if (documents != null && documents.size() > 0) {
             List<Document> documentList = new ArrayList<>(documents.size());
