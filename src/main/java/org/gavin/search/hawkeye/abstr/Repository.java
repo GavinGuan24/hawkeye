@@ -489,13 +489,13 @@ public abstract class Repository<T> {
      * @param source 由默认高亮笔处理后的文本
      * @return
      */
-    public static String standardHighLightOptimizer(String source) {
+    public static String standardHighLightOptimizer(String source, int startLenMx, int contextLenMx, int endLenMx) {
         if (source == null || source.length() == 0) return "";
         StringBuilder targetSB = new StringBuilder("");
         //非空开头上文字数上限
-        int startLenMx = 6;
-        int contextLenMx = 5;
-        int endLenMx = 6;
+        int _startLenMx = startLenMx > 6 ? startLenMx : 6;
+        int _contextLenMx = contextLenMx > 5 ? contextLenMx : 5;
+        int _endLenMx = endLenMx > 6 ? endLenMx : 6;
 
         String[] splitList0 = source.split(HighLightLabS);
         int count = splitList0.length;
@@ -506,7 +506,7 @@ public abstract class Repository<T> {
             String str0 = null;
             if (!item.contains(HighLightLabE)) {
                 //文本开头
-                str0 = (item.length() > startLenMx)?("..." + item.substring(item.length() - startLenMx, item.length())):(item);
+                str0 = (item.length() > _startLenMx)?("..." + item.substring(item.length() - _startLenMx, item.length())):(item);
             } else {
                 String key = item.substring(0, item.indexOf(HighLightLabE));
                 String tail = item.substring(item.indexOf(HighLightLabE) + HighLightLabE.length());
@@ -520,8 +520,8 @@ public abstract class Repository<T> {
                     //片段中
                     if (!tail.equals("")) {
                         //片段含上下文
-                        if (tail.length() > 2*contextLenMx) {
-                            str0 = HighLightLabS + key + HighLightLabE + tail.substring(0, contextLenMx) + "..." + tail.substring(tail.length() - contextLenMx);
+                        if (tail.length() > 2*_contextLenMx) {
+                            str0 = HighLightLabS + key + HighLightLabE + tail.substring(0, _contextLenMx) + "..." + tail.substring(tail.length() - _contextLenMx);
                         } else {
                             str0 = HighLightLabS + key + HighLightLabE + tail;
                         }
@@ -532,8 +532,8 @@ public abstract class Repository<T> {
                     }
                 } else {
                     //结尾
-                    if (tail.length() > endLenMx) {
-                        str0 = HighLightLabS + key + HighLightLabE + tail.substring(0, endLenMx) + "...";
+                    if (tail.length() > _endLenMx) {
+                        str0 = HighLightLabS + key + HighLightLabE + tail.substring(0, _endLenMx) + "...";
                     } else {
                         str0 = HighLightLabS + key + HighLightLabE + tail;
                     }
