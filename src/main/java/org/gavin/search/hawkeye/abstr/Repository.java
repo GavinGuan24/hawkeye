@@ -272,16 +272,14 @@ public abstract class Repository<T> {
      */
     public synchronized final void addDocument(T document) throws IOException {
         checkClosed();
-        if (document != null) {
-            Document target = new Document();
-            parseObject2InternalDocument(document, target);
-            if (target.getFields().size() == 0) throw new IOException("Method (parseObject2InternalDocument) Must add Fields to Document");
-            IndexWriter indexWriter = getIndexWriter();
-            indexWriter.addDocument(target);
-            commitAndCloseIndexWriter(indexWriter);
-        } else {
+        if (document == null)
             throw new IOException("Param \"document\" is Null !!!");
-        }
+        Document target = new Document();
+        parseObject2InternalDocument(document, target);
+        if (target.getFields().size() == 0) throw new IOException("Method (parseObject2InternalDocument) Must add Fields to Document");
+        IndexWriter indexWriter = getIndexWriter();
+        indexWriter.addDocument(target);
+        commitAndCloseIndexWriter(indexWriter);
     }
 
     /**
@@ -291,7 +289,9 @@ public abstract class Repository<T> {
      */
     public synchronized final void addDocuments(List<T> documents) throws IOException {
         checkClosed();
-        if (documents != null && documents.size() > 0) {
+        if (documents == null)
+            throw new IOException("Param \"documents\" is Null !!!");
+        if (documents.size() > 0) {
             List<Document> documentList = new ArrayList<>(documents.size());
             for (T document : documents) {
                 Document target = new Document();
@@ -302,8 +302,6 @@ public abstract class Repository<T> {
             IndexWriter indexWriter = getIndexWriter();
             indexWriter.addDocuments(documentList);
             commitAndCloseIndexWriter(indexWriter);
-        } else {
-            throw new IOException("Param \"documents\" is Null !!!");
         }
     }
 
