@@ -1,6 +1,8 @@
 # hawkeye
 hawkeye is a simple implementation of lucene framework.
 
+该项目已视为我巩固java编程的学习项目, 已停止维护.
+
 ### 简介
 **hawkeye** 是一个 **lucene 7.x.x** 框架的简单实现, 你可以仅直接实现**StandardRepository**的转译功能就可以在你的代码中使用ta了.
 
